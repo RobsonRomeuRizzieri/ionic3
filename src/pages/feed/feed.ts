@@ -28,6 +28,8 @@ export class FeedPage {
     data_coment: "11h ago"
   }
 
+  public lista_filmes = new Array<any>();
+
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
@@ -44,13 +46,18 @@ export class FeedPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad FeedPage, Executa ao carregar a página');
     //this.somaDoisNumeros(5,20);
-    this.movieProvider.getLatesMovies().subscribe(
-      data => {
-        //console.log(data);        
-        const response = (data as any); //transforma o objeto em um objeto de qualquer tipo
-        console.log(response);
-        //const objeto_retorno = JSON.parse(response.body); //Pega a string retornada e converte em um objeto json
+    this.movieProvider.getPopularMovies().subscribe(
+      data => {        
+        const response = (data as any);           
+        //alguns exemplos dizem para fazer assim
+        //const objeto_retorno = JSON.parse(response._body);        
         //console.log(objeto_retorno);
+        //this.lista_filmes = objeto_retorno.results;
+        
+        //mas o que funcionou foi assim
+        //console.log(response.results);
+        this.lista_filmes = response.results;
+        
       }, error => {
         console.log(error);
       }
