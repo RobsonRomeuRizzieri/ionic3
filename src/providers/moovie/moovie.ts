@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
 export class MoovieProvider {
 
   private baseApiPath = "https://api.themoviedb.org/3";
-  private api_key = "crie sua api key no portal";
+  private api_key = "obter api key no portal";
 
   constructor(public http: HttpClient) {
     console.log('Hello MoovieProvider Provider');

@@ -17,6 +17,9 @@ import { MoovieProvider } from '../providers/moovie/moovie';
 import { HttpClientModule } from '@angular/common/http';
 import { FeedPage } from '../pages/feed/feed';
 import { LoginPageModule } from '../pages/login/login.module';
+import { PerfilPageModule } from '../pages/perfil/perfil.module';
+import { SobrePageModule } from '../pages/sobre/sobre.module';
+import { ConfiguracoesPageModule } from '../pages/configuracoes/configuracoes.module';
 
 @NgModule({
   declarations: [
@@ -34,7 +37,10 @@ import { LoginPageModule } from '../pages/login/login.module';
     IntroPageModule,
     HttpModule,
     HttpClientModule,
-    LoginPageModule
+    LoginPageModule,
+    ConfiguracoesPageModule,
+    SobrePageModule,
+    PerfilPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
