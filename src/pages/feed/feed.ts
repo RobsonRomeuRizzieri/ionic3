@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { MoovieProvider } from '../../providers/moovie/moovie';
+import { FilmeDetalhesPage } from '../filme-detalhes/filme-detalhes';
 /**
  * Generated class for the FeedPage page.
  *
@@ -19,6 +20,10 @@ import { MoovieProvider } from '../../providers/moovie/moovie';
 export class FeedPage {
 
   public nome_usuario:string = "Robson Rizzieri";
+  public loader;
+  public refreshing;
+  public isRefreshing: Boolean = false;
+
   public objeto_feed = {
     titulo: "Robson Romeu Rizzieri",
     data: "Outubro 5, 1983",
@@ -33,19 +38,33 @@ export class FeedPage {
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams, 
-    private movieProvider: MoovieProvider) {
+    private movieProvider: MoovieProvider,
+    public loadingCtrl: LoadingController) {
 
   }
 
-  public somaDoisNumeros(num1:number, num2:number): void{
-    //alert("Minha função funcionou");
-    alert(num1 + num2);
-    
+  // Sempre que der refreshe na pagina deslisando ela para baixo
+  doRefresh(refresher){
+    this.refreshing = refresher;
+    this.isRefreshing = true;
+    this.carregarFilmes();
+  }    
+
+  abreCarregando() {
+    this.loader = this.loadingCtrl.create({
+      content: "Aguarde um momento..."
+    });
+    this.loader.present();
   }
 
-  ionViewDidLoad() {
+  fecharCarregando() {
+    this.loader.dismiss();
+  }
+
+  carregarFilmes(){
     console.log('ionViewDidLoad FeedPage, Executa ao carregar a página');
-    //this.somaDoisNumeros(5,20);
+    this.abreCarregando();
+
     this.movieProvider.getPopularMovies().subscribe(
       data => {        
         const response = (data as any);           
@@ -57,11 +76,36 @@ export class FeedPage {
         //mas o que funcionou foi assim
         //console.log(response.results);
         this.lista_filmes = response.results;
-        
+        this.fecharCarregando();
+        if (this.refreshing) {
+          this.refreshing.complete();
+          this.isRefreshing = false;
+        }
       }, error => {
         console.log(error);
+        this.fecharCarregando();
+        if (this.refreshing) {
+          this.refreshing.complete();
+          this.isRefreshing = false;
+        }        
       }
     )
+  }
+
+  public abrirDetalhes(filme: any){
+    console.log(filme);
+    this.navCtrl.push(FilmeDetalhesPage, {id: filme.id});
+  }
+
+  public somaDoisNumeros(num1:number, num2:number): void{
+    //alert("Minha função funcionou");
+    alert(num1 + num2);
+    
+  }
+
+  //Sempre que entrar na pagina
+  ionViewDidEnter() {
+    this.carregarFilmes();
   }
 
 }

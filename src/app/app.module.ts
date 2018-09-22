@@ -20,6 +20,7 @@ import { LoginPageModule } from '../pages/login/login.module';
 import { PerfilPageModule } from '../pages/perfil/perfil.module';
 import { SobrePageModule } from '../pages/sobre/sobre.module';
 import { ConfiguracoesPageModule } from '../pages/configuracoes/configuracoes.module';
+import { FilmeDetalhesPageModule } from '../pages/filme-detalhes/filme-detalhes.module';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { ConfiguracoesPageModule } from '../pages/configuracoes/configuracoes.mo
     LoginPageModule,
     ConfiguracoesPageModule,
     SobrePageModule,
-    PerfilPageModule
+    PerfilPageModule,
+    FilmeDetalhesPageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
