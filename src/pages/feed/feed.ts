@@ -23,6 +23,8 @@ export class FeedPage {
   public loader;
   public refreshing;
   public isRefreshing: Boolean = false;
+  public page = 1; 
+  public infiniteScroll;
 
   public objeto_feed = {
     titulo: "Robson Romeu Rizzieri",
@@ -61,11 +63,11 @@ export class FeedPage {
     this.loader.dismiss();
   }
 
-  carregarFilmes(){
+  carregarFilmes(newPage: boolean = false){
     console.log('ionViewDidLoad FeedPage, Executa ao carregar a página');
     this.abreCarregando();
 
-    this.movieProvider.getPopularMovies().subscribe(
+    this.movieProvider.getPopularMovies(this.page).subscribe(
       data => {        
         const response = (data as any);           
         //alguns exemplos dizem para fazer assim
@@ -75,7 +77,13 @@ export class FeedPage {
         
         //mas o que funcionou foi assim
         //console.log(response.results);
-        this.lista_filmes = response.results;
+        if (newPage){
+          this.lista_filmes = this.lista_filmes.concat(response.results);
+          this.infiniteScroll.complete();
+        } else {
+          this.lista_filmes = response.results;
+        }
+        
         this.fecharCarregando();
         if (this.refreshing) {
           this.refreshing.complete();
@@ -92,8 +100,7 @@ export class FeedPage {
     )
   }
 
-  public abrirDetalhes(filme: any){
-    console.log(filme);
+  public abrirDetalhes(filme: any){    
     this.navCtrl.push(FilmeDetalhesPage, {id: filme.id});
   }
 
@@ -102,6 +109,12 @@ export class FeedPage {
     alert(num1 + num2);
     
   }
+
+  doInfinite(infiniteScroll) {
+    this.page++;
+    this.infiniteScroll = infiniteScroll;
+    this.carregarFilmes(true);    
+  }  
 
   //Sempre que entrar na pagina
   ionViewDidEnter() {

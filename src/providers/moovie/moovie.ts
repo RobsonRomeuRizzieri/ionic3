@@ -13,7 +13,7 @@ import 'rxjs/add/operator/map';
 export class MoovieProvider {
 
   private baseApiPath = "https://api.themoviedb.org/3";
-  private api_key = "crie sua api key";
+  private api_key = "criar sua api key para conectar";
 
   constructor(public http: HttpClient) {
     console.log('Hello MoovieProvider Provider');
@@ -24,8 +24,8 @@ export class MoovieProvider {
   }
 
   
-  getPopularMovies(){
-    return this.http.get(this.baseApiPath + "/movie/popular?api_key=" + this.api_key);
+  getPopularMovies(page = 1){
+    return this.http.get(this.baseApiPath + `/movie/popular?page=${page}&api_key=` + this.api_key);
   }
 
   getMovieDetails(filmeid){

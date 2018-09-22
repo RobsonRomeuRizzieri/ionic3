@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { MoovieProvider } from '../../providers/moovie/moovie';
 
 /**
  * Generated class for the FilmeDetalhesPage page.
@@ -18,7 +19,11 @@ export class FilmeDetalhesPage {
   public filme;
   public filmeid;
   
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams, 
+    public movieProvider: MoovieProvider
+  ) {
   }
 
   ionViewDidLoad() {
@@ -27,8 +32,15 @@ export class FilmeDetalhesPage {
 
   // Sempre que entrar na pagina vai ser executada
   ionViewDidEnter() {
-    this.filmeid = this.navParams.get("id");
-    console.log("filme id recebido:", this.filmeid);
+    this.filmeid = this.navParams.get("id");    
+    this.movieProvider.getMovieDetails(this.filmeid).subscribe(data => {
+      //let retorno = (data as any)._body;
+      //this.filme = JSON.parse(retorno);
+      let retorno = (data as any);      
+      this.filme = retorno;
+    }, error => {
+      console.log(error);
+    })
   }
 
 }
